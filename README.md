@@ -3,10 +3,10 @@
 ## Overview
 
 ### Hardware
-- Lenovo Thinkcentre M80q Gen 2:
-  - CPU: Intel i5-10500T @ 2.30GHz
+- Thinkcentre M80q Gen 3 Tiny:
+  - CPU: Intel Core i5-12500T @ 2.00GHz
   - RAM: 16GB
-  - SSD: 512GB
+  - SSD: 256GB
 
 ### Applications
 
