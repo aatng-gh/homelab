@@ -10,6 +10,8 @@
 
 ### Applications
 
-| Name       | Description               | URL  |
-|------------|---------------------------|------|
-| Excalidraw | Whiteboard for diagrams   | WIP  |
+| Name        | Description               | URL  |
+|-------------|---------------------------|------|
+| Plex        | Media server platform     | TBD  |
+| Excalidraw  | Whiteboard for diagrams   | TBD  |
+| Wireguard   | VPN for secure connections| TBD  |
