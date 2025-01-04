@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: linkding-pvc
+  namespace: apps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkding-deployment
+  namespace: apps
+  labels:
+    app: linkding
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: linkding
+  template:
+    metadata:
+      labels:
+        app: linkding
+    spec:
+      containers:
+        - name: linkding
+          image: sissbruecker/linkding:1.36.0-alpine
+          env:
+            - name: LD_SUPERUSER_NAME
+              value: root
+            - name: LD_SUPERUSER_PASSWORD
+              value: root
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: linkding-data
+              mountPath: /etc/linkding/data
+          securityContext:
+            runAsUser: 82
+            runAsGroup: 82
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+      volumes:
+        - name: linkding-data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: linkding-service
+  namespace: apps
+  labels:
+    app: linkding
+spec:
+  type: ClusterIP
+  selector:
+    app: linkding
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
