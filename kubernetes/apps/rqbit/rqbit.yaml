@@ -30,15 +30,15 @@ spec:
       volumes:
         - name: rqbit-db
           hostPath:
-            path: /var/apps/rtorrent/db
+            path: /var/apps/rqbit/db
             type: DirectoryOrCreate
         - name: rqbit-cache
           hostPath:
-            path: /var/apps/rtorrent/cache
+            path: /var/apps/rqbit/cache
             type: DirectoryOrCreate
         - name: rqbit-downloads
           hostPath:
-            path: /var/apps/rtorrent/downloads
+            path: /var/apps/rqbit/downloads
             type: DirectoryOrCreate
 ---
 apiVersion: v1
