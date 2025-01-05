@@ -11,6 +11,7 @@
 
 ### Applications
 
-| Name  | Description    | URL                |
-| ----- | -------------- | ------------------ |
-| Rqbit | Torrent client | localhost:3030/web |
+| Name     | Description      | URL                |
+| -------- | ---------------- | ------------------ |
+| Rqbit    | Torrent client   | localhost:3030/web |
+| Linkding | Bookmark manager | localhost:9090     |
