@@ -31,7 +31,7 @@ spec:
       volumes:
         - name: linkding-data
           hostPath:
-            path: /var/data/linkding
+            path: /var/apps/linkding/data
             type: DirectoryOrCreate
 ---
 apiVersion: v1
