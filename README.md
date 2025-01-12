@@ -6,7 +6,7 @@
 
 - Thinkcentre M80q Gen 3 Tiny:
   - CPU: Intel Core i5-12500T @ 2.00GHz
-  - RAM: 16GB
+  - RAM: 32GB
   - SSD: 256GB
 
 ### Applications
