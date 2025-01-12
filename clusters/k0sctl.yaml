@@ -1,0 +1,21 @@
+apiVersion: k0sctl.k0sproject.io/v1beta1
+kind: Cluster
+metadata:
+  name: bm-zero
+spec:
+  hosts:
+    - ssh:
+        address: 192.168.8.31
+        user: root
+        keyPath: ~/.ssh/bm-zero_ed25519
+      role: controller
+    - ssh:
+        address: 192.168.8.32
+        user: root
+        keyPath: ~/.ssh/bm-zero_ed25519
+      role: worker
+    - ssh:
+        address: 192.168.8.33
+        user: root
+        keyPath: ~/.ssh/bm-zero_ed25519
+      role: worker
