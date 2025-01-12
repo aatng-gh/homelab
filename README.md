@@ -1,4 +1,4 @@
-# EVERGLADES - Aaron's Homelab
+# Aaron's Homelab
 
 ## Overview
 
