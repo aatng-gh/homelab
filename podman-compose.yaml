@@ -1,0 +1,60 @@
+name: homelab
+
+services:
+  coredns:
+    container_name: coredns
+    image: coredns/coredns:1.12.1
+    volumes:
+      - ./coredns/Corefile:/etc/coredns/Corefile:ro
+    command: -conf /etc/coredns/Corefile -dns.port 53
+    networks:
+      - coredns
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+      - "8080:8080"
+    restart: unless-stopped
+  caddy:
+    container_name: caddy
+    image: localhost/caddy:2.9.1
+    restart: unless-stopped
+    networks:
+      - coredns
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /data/caddy/data:/data
+      - /data/caddy/config:/config
+    environment:
+      - CF_API_TOKEN=${CF_API_TOKEN}
+  plex:
+    container_name: plex
+    image: plexinc/pms-docker:latest
+    environment:
+      - TZ=America/New_York
+      - PLEX_CLAIM=${PLEX_CLAIM}
+    volumes:
+      - /data/plex/config:/config:Z
+      - /data/plex/transcode:/transcode:Z
+      - /data/plex/media:/data:Z
+    ports:
+      - "32400:32400/tcp"
+      - "32469:32469/tcp"
+      - "32469:32469/udp"
+      - "1900:1900/udp"
+      - "3005:3005/tcp"
+      - "8324:8324/tcp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+    networks:
+      - coredns
+    restart: unless-stopped
+
+networks:
+  coredns:
+    external: true

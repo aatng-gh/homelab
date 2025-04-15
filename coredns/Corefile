@@ -1,0 +1,23 @@
+nguyenwork.space:53 {
+    log
+    errors
+    forward . 8.8.8.8 9.9.9.9
+    hosts {
+        192.168.8.30 plex.nguyenwork.space
+    }
+}
+
+internal:53 {
+    log
+    errors
+    hosts {
+        192.168.8.30 homelab.internal
+        192.168.8.1 router.internal
+    }
+}
+
+.:53 {
+    log
+    errors
+    forward . 8.8.8.8 9.9.9.9
+}
