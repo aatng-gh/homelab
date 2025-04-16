@@ -16,5 +16,5 @@
 | Cockpit  | System dashoard    | cockpit.nguyenwork.space |
 | Plex     | Media streaming    | plex.nguyenwork.space    |
 | Aria2    | Torrent downloader | aria2.nguyenwork.space   |
-| Rqbit    | Torrent downloader | localhost:3030/web       |
+| Rqbit    | Torrent downloader | rqbit.nguyenwork.space   |
 | Linkding | Bookmark manager   | localhost:9090           |

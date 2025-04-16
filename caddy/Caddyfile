@@ -18,3 +18,10 @@ aria2.nguyenwork.space {
         dns cloudflare {env.CF_API_TOKEN}
     }
 }
+
+rqbit.nguyenwork.space {
+    reverse_proxy 192.168.8.30:3030
+    tls {
+        dns cloudflare {env.CF_API_TOKEN}
+    }
+}

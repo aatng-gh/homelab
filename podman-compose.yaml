@@ -5,35 +5,44 @@ services:
     container_name: coredns
     image: coredns/coredns:1.12.1
     command: -conf /etc/coredns/Corefile
-    volumes:
-      - ./coredns/Corefile:/etc/coredns/Corefile:ro
     networks:
       - dns_net
     ports:
       - 192.168.8.30:53:53/udp
       - 192.168.8.30:53:53/tcp
+    volumes:
+      - ./coredns/Corefile:/etc/coredns/Corefile:ro
     restart: unless-stopped
   ## --- reverse proxy ---
   caddy:
     container_name: caddy
     image: localhost/caddy:2.9.1
-    volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - /data/caddy/data:/data
-      - /data/caddy/config:/config
-    environment:
-      CF_API_TOKEN: ${CF_API_TOKEN}
     networks:
       - dns_net
     ports:
       - 80:80
       - 443:443
       - 443:443/udp
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /data/caddy/data:/data
+      - /data/caddy/config:/config
+    environment:
+      CF_API_TOKEN: ${CF_API_TOKEN}
     restart: unless-stopped
   ## --- media server ---
   plex:
     container_name: plex
     image: plexinc/pms-docker:latest
+    networks:
+      - dns_net
+    ports:
+      - 32400:32400/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
     volumes:
       - /data/plex/config:/config:Z
       - /data/plex/transcode:/transcode:Z
@@ -41,24 +50,21 @@ services:
     environment:
       TZ: America/New_York
       PLEX_CLAIM: ${PLEX_CLAIM}
-    networks:
-      - dns_net
-    ports:
-      - 32400:32400/tcp # web ui
-      - 1900:1900/udp # dlna ssdp
-      - 32410:32410/udp # gdm discovery
-      - 32412:32412/udp
-      - 32413:32413/udp
-      - 32414:32414/udp
     restart: unless-stopped
   ## --- vpn ---
   gluetun:
     container_name: gluetun
     image: qmcgaw/gluetun
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
+    networks:
+      - vpn_net
+    ports:
+      - 8888:8888/tcp
+      - 6880:6880
+      - 6800:6800
+      - 6888:6888
+      - 6888:6888/udp
+      - 3030:3030
+      - 4240:4240
     volumes:
       - /data/gluetun:/gluetun
     environment:
@@ -67,36 +73,43 @@ services:
       WIREGUARD_PRIVATE_KEY: ${WIREGUARD_PRIVATE_KEY}
       WIREGUARD_ADDRESSES: 10.14.0.2/16
       SERVER_COUNTRIES: United States
-    networks:
-      - vpn_net
-    ports:
-      - 8888:8888/tcp # gluetun web ui
-      - 6880:6880 # aria2-fe
-      - 6800:6800 # aria2-be rpc
-      - 6888:6888 # aria2-be
-      - 6888:6888/udp # aria2-be udp
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
     restart: unless-stopped
-  ## --- aria2 ---
+  ## --- aria2 backend ---
   aria2-be:
     container_name: aria2-be
     image: p3terx/aria2-pro
     network_mode: service:gluetun
-    environment:
-      RPC_SECRET: ${RPC_SECRET}
-      RPC_PORT: 6800
-      LISTEN_PORT: 6888
     volumes:
       - /data/aria2/config:/config:Z
       - /data/aria2/downloads:/downloads:Z
       - /data/plex/media:/downloads/plex:Z
+    environment:
+      RPC_SECRET: ${RPC_SECRET}
+      RPC_PORT: 6800
+      LISTEN_PORT: 6888
     restart: unless-stopped
+  ## --- aria2 frontend ---
   aria2-fe:
     container_name: aria2-fe
     image: p3terx/ariang
     network_mode: service:gluetun
-    logging:
-      options:
-        max-size: 1m
+    restart: unless-stopped
+  ## --- rqbit ---
+  rqbit:
+    container_name: rqbit
+    image: ikatson/rqbit:main
+    network_mode: service:gluetun
+    volumes:
+      - /data/rqbit/db:/home/rqbit/db:Z
+      - /data/rqbit/cache:/home/rqbit/cache:Z
+      - /data/rqbit/downloads:/home/rqbit/downloads:Z
+      - /data/plex/media:/home/rqbit/downloads/plex:Z
+    environment:
+      HOME: /home/rqbit
     restart: unless-stopped
 networks:
   dns_net:
