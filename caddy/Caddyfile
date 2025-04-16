@@ -11,3 +11,10 @@ plex.nguyenwork.space {
         dns cloudflare {env.CF_API_TOKEN}
     }
 }
+
+aria2.nguyenwork.space {
+    reverse_proxy 192.168.8.30:6880
+    tls {
+        dns cloudflare {env.CF_API_TOKEN}
+    }
+}

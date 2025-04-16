@@ -9,6 +9,7 @@
       # nguyenwork.space
       192.168.8.30 cockpit.nguyenwork.space
       192.168.8.30 plex.nguyenwork.space
+      192.168.8.30 aria2.nguyenwork.space
 
       fallthrough
     }
