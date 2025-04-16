@@ -1,60 +1,75 @@
 name: homelab
-
 services:
   coredns:
     container_name: coredns
     image: coredns/coredns:1.12.1
+    command: -conf /etc/coredns/Corefile
     volumes:
       - ./coredns/Corefile:/etc/coredns/Corefile:ro
-    command: -conf /etc/coredns/Corefile -dns.port 53
     networks:
-      - coredns
+      - dns_net
     ports:
-      - "53:53/udp"
-      - "53:53/tcp"
-      - "8080:8080"
+      - "192.168.8.30:53:53/udp"
+      - "192.168.8.30:53:53/tcp"
     restart: unless-stopped
   caddy:
     container_name: caddy
     image: localhost/caddy:2.9.1
-    restart: unless-stopped
-    networks:
-      - coredns
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - /data/caddy/data:/data
       - /data/caddy/config:/config
     environment:
       - CF_API_TOKEN=${CF_API_TOKEN}
+    networks:
+      - dns_net
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    restart: unless-stopped
   plex:
     container_name: plex
     image: plexinc/pms-docker:latest
-    environment:
-      - TZ=America/New_York
-      - PLEX_CLAIM=${PLEX_CLAIM}
     volumes:
       - /data/plex/config:/config:Z
       - /data/plex/transcode:/transcode:Z
       - /data/plex/media:/data:Z
+    environment:
+      - TZ=America/New_York
+      - PLEX_CLAIM=${PLEX_CLAIM}
+    networks:
+      - dns_net
     ports:
-      - "32400:32400/tcp"
-      - "32469:32469/tcp"
-      - "32469:32469/udp"
-      - "1900:1900/udp"
-      - "3005:3005/tcp"
-      - "8324:8324/tcp"
-      - "32410:32410/udp"
+      - "32400:32400/tcp" # web ui
+      - "1900:1900/udp" # dlna ssdp
+      - "32410:32410/udp" # gdm discovery
       - "32412:32412/udp"
       - "32413:32413/udp"
       - "32414:32414/udp"
-    networks:
-      - coredns
     restart: unless-stopped
-
+  gluetun:
+    container_name: gluetun
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /data/gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=surfshark
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=10.14.0.2/16
+      - SERVER_COUNTRIES=United States
+    networks:
+      - vpn_net
+    ports:
+      - "8888:8888/tcp"
+    restart: unless-stopped
 networks:
-  coredns:
-    external: true
+  dns_net:
+    driver: bridge
+  vpn_net:
+    driver: bridge
