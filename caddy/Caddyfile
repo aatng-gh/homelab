@@ -1,5 +1,8 @@
-homelab.internal {
+homelab.nguyenwork.space {
     reverse_proxy 192.168.8.30:9090
+    tls {
+        dns cloudflare {env.CF_API_TOKEN}
+    }
 }
 
 plex.nguyenwork.space {
