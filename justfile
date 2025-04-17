@@ -37,3 +37,31 @@ logs service:
 # stop a specific service
 stop service:
     podman-compose stop {{service}}
+
+# --- Images --- #
+GITHUB_USER := 'aatng-gh'
+REPO := 'homelab'
+
+ghcr_login:
+    echo 'logging into GHCR...'
+    podman login ghcr.io -u {{GITHUB_USER}} -p $GITHUB_TOKEN
+
+
+CADDY_REGISTRY := 'ghcr.io/aatng-gh/{{REPO}}/caddy'
+
+# build Caddy image with tag
+caddy_build tag:
+    echo 'building Caddy image...'
+    podman build -t {{CADDY_REGISTRY}}:{{tag}} -f caddy/Containerfile .
+
+# push Caddy image with tag
+caddy_push tag:
+    echo "pushing Caddy image to GHCR..."
+    podman push {{CADDY_REGISTRY}}:{{tag}}
+
+# build + push
+caddy_publish tag:
+    just caddy_build {{tag}}
+    podman tag {{CADDY_REGISTRY}}:{{tag}} {{CADDY_REGISTRY}}:latest
+    just caddy_push {{tag}}
+    just caddy_push latest
