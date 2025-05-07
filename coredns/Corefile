@@ -1,19 +1,19 @@
-.:53 {
+nguyenwork.space:53 {
     log
     errors
 
     hosts {
-      # internal
-      192.168.8.1 router.internal
-
-      # nguyenwork.space
-      192.168.8.30 cockpit.nguyenwork.space
-      192.168.8.30 plex.nguyenwork.space
-      192.168.8.30 aria2.nguyenwork.space
-      192.168.8.30 rqbit.nguyenwork.space
-
-      fallthrough
+        192.168.8.30 cockpit.nguyenwork.space
+        192.168.8.30 plex.nguyenwork.space
+        192.168.8.30 aria2.nguyenwork.space
+        192.168.8.30 rqbit.nguyenwork.space
     }
 
-    forward . 8.8.8.8 9.9.9.9
+    forward . 1.1.1.1 1.0.0.1
+}
+
+.:53 {
+    log
+    errors
+    forward . 1.1.1.1 1.0.0.1
 }
