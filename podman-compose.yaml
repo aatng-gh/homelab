@@ -106,8 +106,7 @@ services:
     volumes:
       - /data/rqbit/db:/home/rqbit/db:Z
       - /data/rqbit/cache:/home/rqbit/cache:Z
-      - /data/rqbit/downloads:/home/rqbit/downloads:Z
-      - /data/plex/media:/home/rqbit/downloads/plex:Z
+      - /data/plex/media:/home/rqbit/downloads:Z
     environment:
       HOME: /home/rqbit
     restart: unless-stopped
