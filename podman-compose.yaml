@@ -55,7 +55,7 @@ services:
   # vpn
   gluetun:
     container_name: gluetun
-    image: qmcgaw/gluetun
+    image: qmcgaw/gluetun:v3.39
     networks:
       - vpn_net
     ports:
