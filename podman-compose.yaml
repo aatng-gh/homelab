@@ -1,6 +1,7 @@
+---
 name: homelab
 services:
-  ## --- dns ---
+  # dns
   coredns:
     container_name: coredns
     image: coredns/coredns:1.12.1
@@ -30,7 +31,7 @@ services:
     environment:
       CF_API_TOKEN: ${CF_API_TOKEN}
     restart: unless-stopped
-  ## --- media server ---
+  # --- media server ---
   plex:
     container_name: plex
     image: plexinc/pms-docker:latest
@@ -51,7 +52,7 @@ services:
       TZ: America/New_York
       PLEX_CLAIM: ${PLEX_CLAIM}
     restart: unless-stopped
-  ## --- vpn ---
+  # --- vpn ---
   gluetun:
     container_name: gluetun
     image: qmcgaw/gluetun
@@ -78,7 +79,7 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
-  ## --- aria2 backend ---
+  ## aria2 backend
   aria2-be:
     container_name: aria2-be
     image: p3terx/aria2-pro
@@ -92,13 +93,13 @@ services:
       RPC_PORT: 6800
       LISTEN_PORT: 6888
     restart: unless-stopped
-  ## --- aria2 frontend ---
+  # aria2 frontend
   aria2-fe:
     container_name: aria2-fe
     image: p3terx/ariang
     network_mode: service:gluetun
     restart: unless-stopped
-  ## --- rqbit ---
+  # rqbit
   rqbit:
     container_name: rqbit
     image: ikatson/rqbit:main
