@@ -14,7 +14,7 @@ services:
     volumes:
       - ./coredns/Corefile:/etc/coredns/Corefile:ro
     restart: unless-stopped
-  ## --- reverse proxy ---
+  # reverse proxy
   caddy:
     container_name: caddy
     image: ghcr.io/aatng-gh/homelab/caddy:2.9.1
@@ -31,10 +31,10 @@ services:
     environment:
       CF_API_TOKEN: ${CF_API_TOKEN}
     restart: unless-stopped
-  # --- media server ---
+  # media server
   plex:
     container_name: plex
-    image: plexinc/pms-docker:latest
+    image: plexinc/pms-docker:1.41.7.9799-5bce000f7
     networks:
       - dns_net
     ports:
@@ -52,10 +52,10 @@ services:
       TZ: America/New_York
       PLEX_CLAIM: ${PLEX_CLAIM}
     restart: unless-stopped
-  # --- vpn ---
+  # vpn
   gluetun:
     container_name: gluetun
-    image: qmcgaw/gluetun
+    image: qmcgaw/gluetun:v3.39
     networks:
       - vpn_net
     ports:
@@ -82,7 +82,7 @@ services:
   # rqbit
   rqbit:
     container_name: rqbit
-    image: ikatson/rqbit:main
+    image: ikatson/rqbit:7.0
     network_mode: service:gluetun
     volumes:
       - /data/rqbit/db:/home/rqbit/db:Z
