@@ -79,26 +79,6 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
-  ## aria2 backend
-  aria2-be:
-    container_name: aria2-be
-    image: p3terx/aria2-pro
-    network_mode: service:gluetun
-    volumes:
-      - /data/aria2/config:/config:Z
-      - /data/aria2/downloads:/downloads:Z
-      - /data/plex/media:/downloads/plex:Z
-    environment:
-      RPC_SECRET: ${RPC_SECRET}
-      RPC_PORT: 6800
-      LISTEN_PORT: 6888
-    restart: unless-stopped
-  # aria2 frontend
-  aria2-fe:
-    container_name: aria2-fe
-    image: p3terx/ariang
-    network_mode: service:gluetun
-    restart: unless-stopped
   # rqbit
   rqbit:
     container_name: rqbit
