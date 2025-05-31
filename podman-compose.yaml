@@ -82,7 +82,7 @@ services:
   # rqbit
   rqbit:
     container_name: rqbit
-    image: ikatson/rqbit:7.0
+    image: ikatson/rqbit:8.0
     network_mode: service:gluetun
     volumes:
       - /data/rqbit/db:/home/rqbit/db:Z
