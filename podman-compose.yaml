@@ -49,6 +49,8 @@ services:
       - /data/plex/transcode:/transcode:Z
       - /data/plex/media:/data:Z
     environment:
+      PLEX_UID: 0
+      PLEX_GID: 0
       TZ: America/New_York
       PLEX_CLAIM: ${PLEX_CLAIM}
     restart: unless-stopped
