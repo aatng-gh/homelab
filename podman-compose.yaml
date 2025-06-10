@@ -4,7 +4,7 @@ services:
   # dns
   coredns:
     container_name: coredns
-    image: coredns/coredns:1.12.1
+    image: coredns/coredns:1.12.2
     command: -conf /etc/coredns/Corefile
     networks:
       - dns_net
