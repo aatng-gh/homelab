@@ -1,4 +1,4 @@
-cockpit.nguyenwork.space {
+bm-zero.nguyenwork.space {
     reverse_proxy 192.168.8.30:9090
     tls {
         dns cloudflare {env.CF_API_TOKEN}
@@ -7,13 +7,6 @@ cockpit.nguyenwork.space {
 
 plex.nguyenwork.space {
     reverse_proxy 192.168.8.30:32400
-    tls {
-        dns cloudflare {env.CF_API_TOKEN}
-    }
-}
-
-aria2.nguyenwork.space {
-    reverse_proxy 192.168.8.30:6880
     tls {
         dns cloudflare {env.CF_API_TOKEN}
     }

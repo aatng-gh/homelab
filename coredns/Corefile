@@ -1,19 +1,12 @@
-nguyenwork.space:53 {
-    log
-    errors
-
+nguyenwork.space {
     hosts {
-        192.168.8.30 cockpit.nguyenwork.space
-        192.168.8.30 plex.nguyenwork.space
-        192.168.8.30 aria2.nguyenwork.space
-        192.168.8.30 rqbit.nguyenwork.space
+        192.168.8.30 bm-zero.nguyenwork.space plex.nguyenwork.space rqbit.nguyenwork.space
+        ttl 60
     }
-
-    forward . 1.1.1.1 1.0.0.1
+    reload 10s
 }
 
-.:53 {
-    log
-    errors
+. {
     forward . 1.1.1.1 1.0.0.1
+    reload 10s
 }
