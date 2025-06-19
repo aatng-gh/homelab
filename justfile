@@ -50,7 +50,6 @@ ghcr_login:
     echo 'logging into GHCR...'
     podman login ghcr.io -u {{GITHUB_USER}} -p $GITHUB_TOKEN
 
-
 CADDY_REGISTRY := 'ghcr.io/aatng-gh/{{REPO}}/caddy'
 
 # build Caddy image with tag
