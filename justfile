@@ -1,9 +1,9 @@
 set dotenv-load
 
 # --- Sync --- #
-REMOTE := 'root@192.168.8.30'
+REMOTE := 'root@bm-zero'
 REMOTE_DIR := '/root/homelab'
-LOCAL := '/Users/aaron/Dev/homelab'
+LOCAL := "$HOME/Dev/homelab"
 
 # pull from remote to local
 pull:
@@ -33,6 +33,10 @@ restart:
 # show logs for a specific service
 logs service:
     podman-compose logs -f {{service}}
+
+# start a specific service
+start service:
+    podman-compose up -d {{service}}
 
 # stop a specific service
 stop service:
