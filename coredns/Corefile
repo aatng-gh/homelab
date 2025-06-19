@@ -1,4 +1,6 @@
 nguyenwork.space {
+    log
+    errors
     hosts {
         192.168.8.30 bm-zero.nguyenwork.space plex.nguyenwork.space rqbit.nguyenwork.space
         ttl 60
@@ -7,6 +9,8 @@ nguyenwork.space {
 }
 
 . {
+    log
+    errors
     forward . 1.1.1.1 1.0.0.1
     reload 10s
 }
