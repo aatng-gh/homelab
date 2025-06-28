@@ -1,19 +1,6 @@
 ---
 name: homelab
 services:
-  # dns
-  coredns:
-    container_name: coredns
-    image: coredns/coredns:1.12.2
-    command: -conf /etc/coredns/Corefile
-    networks:
-      - dns_net
-    ports:
-      - 192.168.8.30:53:53/udp
-      - 192.168.8.30:53:53/tcp
-    volumes:
-      - ./coredns/Corefile:/etc/coredns/Corefile:ro
-    restart: unless-stopped
   # reverse proxy
   caddy:
     container_name: caddy
